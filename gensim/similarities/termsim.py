@@ -397,6 +397,9 @@ class SparseTermSimilarityMatrix(SaveLoad):
                     u"sparse documents must not contain any explicit zero entries and the similarity matrix S " \
                     u"must satisfy x^T * S * x > 0 for any nonzero bag-of-words vector x."
 
+                # replace all zero values with very small numbers
+                Y_norm[Y_norm == 0.0] = 1e-08
+
                 X = np.multiply(X, 1 / np.sqrt(X_norm)).T
                 Y = np.multiply(Y, 1 / np.sqrt(Y_norm))
                 Y = np.nan_to_num(Y)  # Account for division by zero when Y_norm.min() == 0.0
